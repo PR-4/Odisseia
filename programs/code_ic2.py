@@ -13,6 +13,7 @@ import glob
 from dlisio import dlis
 import pandas as pd
 import re
+import matplotlib.pyplot as plt
 # modulos internos
 import sys
 sys.path.insert(0,'../modules')
@@ -139,6 +140,10 @@ canais3 = list(sorted(set(canais2)))
 
 ## EXTRAINDO AS CURVAS E TRANSFORMANDO EM DATAFRAMES"""
 
+
+canais_alvo = ['GR','EHGR']
+
+
 lista_curvas = []
 
 for i in lista_logicos2: # ERRO!!!!!! Qual lista a iterar logicos 1 ou 2 ? Estava lista_logicos, variável não definida.
@@ -191,18 +196,164 @@ lis = [lista_curvas2[0], lista_curvas2[1000], lista_curvas2[3000]]
 
 #concatenando a lista de teste
 curvas = pd.concat(lis, axis = 1)
-curvas2 = pd.concat(lista_curvas2, axis = 1)
-
-
-#db.pause()
-#db.stop()
-
+#curvas2 = pd.concat(lista_curvas2, axis = 1)
 
 
 #print(curvas)
-print(curvas2)
+#print(curvas2)
+
+
+
+# ### CRIANDO UM DATAFRAME COM TODOS OS CANAIS E SEUS RESPECTIVOS "LONG NAMES"
+
+
+
+def summary_dataframe(object, **kwargs):
+    # Create an empty dataframe
+    df = pd.DataFrame()
+    
+    # Iterate over each of the keyword arguments
+    for i, (key, value) in enumerate(kwargs.items()):
+        list_of_values = []
+        
+        # Iterate over each parameter and get the relevant key
+        for item in object:
+            # Account for any missing values.
+            try:
+                x = getattr(item, key)
+                list_of_values.append(x)
+            except:
+                list_of_values.append('')
+                continue
+        
+        # Add a new column to our data frame
+        df[value]=list_of_values
+    
+    # Sort the dataframe by column 1 and return it
+    return df.sort_values(df.columns[0])
+
+
+
+channels = summary_dataframe(f.channels, name='Name', long_name='Long Name',
+                             dimension='Dimension', units='Units', frame='Frame')
+print(channels)
+
+
+
+
+# ### FUNÇÃO PARA FILTRAR A PALAVRA ESCOLHIDA (PARÂMETRO FÍSICO) E RETORNAR UMA LISTA COM O NOME DOS CANAIS DO RESPECTIVO PARÂMETRO
+
+
+
+def lista_canais(dataframe, nome_canal):
+    df_novo = dataframe[dataframe['Long Name'].str.contains(nome_canal)]
+    lista = df_novo['Name'].to_list()
+    return lista
+
+
+
+lista_gamma = lista_canais(df, 'Gamma')
+
+
+
+print(lista_gamma)
+
+
+
+db.pause()
+db.stop()
+
+
+
+
+#FUNÇÃO PARA REMOVER VALORES REPETIDOS
+
+def remove_repetidos(lista):
+    l = []
+    for i in lista:
+        if i not in l:
+            l.append(i)
+    l.sort()
+    return l
+
+
+# In[125]:
+
+
+lista_gamma = remove_repetidos(lista_gamma)
+
+
+# In[126]:
+
+
+print(lista_gamma)
+
+
+# ### APLICANDO O CÓDIGO NA NOVA LISTA
+
+# In[127]:
+
+
+lista_curvas = []
+
+for i in lista_logicos2:
+    
+    for fr in lista_frames3:
+        
+        try:
+            
+            #pegando as curvas de todos os frames
+            frame = i.object('FRAME', fr)
+            curves = frame.curves()
+        
+        except Exception as err: 
+
+            print(f' *O arquivo {i}, possui o erro: {err}*')
+            pass
+         
+        for v in lista_gamma: ###AQUI QUE APLICA A NOVA LISTA <-----------------------------
+                
+            try:
+                #colocando o nome da curva como o nome da curva + nome do logico  + nome do frame
+                curva_name = v + '_' + str(i) + '_' + str(fr)
+                #transformando as curvas em dataframes, onde o index é o TDEP convertido para metros
+                curvas = pd.DataFrame(curves[v], columns = [curva_name], index = curves['TDEP']*0.00254)
+                #colocando todos os dataframes em uma lista de dataframes
+                lista_curvas.append(curvas)
+                #para alertar quais lógicos possuem as curvas
+                print(f'** O arquivo {i} possui a curva {v}')
+
+
+            except Exception as e: 
+
+                print(f' O arquivo {i}, possui o erro: {e}')
+                pass
+
+# In[131]:
+
+
+lista_curvas2 = []
+for i in lista_curvas:
+    lista_curvas2.append(i.reset_index().drop_duplicates(subset='index', keep='last').set_index('index').sort_index())
+
+
+# In[132]:
+
+
+curvas_gamma = pd.concat(lista_curvas2, axis = 1)
+
+
+# In[134]:
+
+
+print(curvas_gamma)
+
 
 #Visualização das curvas
+
+
+#plt.plot(las.index, las["GR"])
+
 
 #padrao={'comprimento':15,
 #            'altura':15
