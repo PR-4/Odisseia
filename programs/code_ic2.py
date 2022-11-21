@@ -59,7 +59,7 @@ def flatten(lis):
 
 lista_logicos2 = list(flatten(lista_logicos1))
 
-#print(lista_logicos2)
+print(lista_logicos2)
 
 
 
@@ -141,7 +141,7 @@ canais3 = list(sorted(set(canais2)))
 ## EXTRAINDO AS CURVAS E TRANSFORMANDO EM DATAFRAMES"""
 
 
-canais_alvo = ['GR','EHGR']
+#canais_alvo = ['RT','DT']
 
 
 lista_curvas = []
@@ -158,7 +158,7 @@ for i in lista_logicos2: # ERRO!!!!!! Qual lista a iterar logicos 1 ou 2 ? Estav
         
         except Exception as err: 
 
-            print(f' *O arquivo {i}, possui o erro: {err}*')
+            #print(f' *O arquivo {i}, possui o erro: {err}*')
             pass
          
         for v in canais3:
@@ -171,12 +171,12 @@ for i in lista_logicos2: # ERRO!!!!!! Qual lista a iterar logicos 1 ou 2 ? Estav
                 #colocando todos os dataframes em uma lista de dataframes
                 lista_curvas.append(curvas)
                 #O asteristico alerta para quais lógicos possuem as curvas
-                print(f'** O arquivo {i} possui a curva {v}')
+                #print(f'** O arquivo {i} possui a curva {v}')
 
 
             except Exception as e: 
 
-                print(f' O arquivo {i}, possui o erro: {e}')
+                #print(f' O arquivo {i}, possui o erro: {e}')
                 pass
 
 
@@ -206,7 +206,7 @@ curvas = pd.concat(lis, axis = 1)
 
 # ### CRIANDO UM DATAFRAME COM TODOS OS CANAIS E SEUS RESPECTIVOS "LONG NAMES"
 
-
+df = pd.DataFrame() #O dataframe precisa ser definido fora do laço
 
 def summary_dataframe(object, **kwargs):
     # Create an empty dataframe
@@ -245,24 +245,18 @@ print(channels)
 
 
 
-def lista_canais(dataframe, nome_canal):
+def lista_canais(dataframe, nome_canal): # não está fazendo para outras propriedades
     df_novo = dataframe[dataframe['Long Name'].str.contains(nome_canal)]
     lista = df_novo['Name'].to_list()
     return lista
 
 
 
-lista_gamma = lista_canais(df, 'Gamma')
+lista_gamma = lista_canais(channels, 'Sonic')
 
 
 
 print(lista_gamma)
-
-
-
-db.pause()
-db.stop()
-
 
 
 
@@ -347,12 +341,16 @@ curvas_gamma = pd.concat(lista_curvas2, axis = 1)
 
 
 print(curvas_gamma)
+print(type(curvas_gamma))
+
 
 
 #Visualização das curvas
 
 
-#plt.plot(las.index, las["GR"])
+#plt.plot(curvas_gamma['index'], curvas_gamma['ECGR_LogicalFile(RFT_041LUP)_60B'])
+
+
 
 
 #padrao={'comprimento':15,
@@ -370,8 +368,8 @@ print(curvas_gamma)
 
 #Salva o Dataframe:
 
-#curvas.to_excel("../outputs/curvas.xlsx",index=True)
-#curvas.to_csv("../outputs/curvas.txt",index=True)
+curvas_gamma.to_excel("../outputs/canais_gamma.xlsx",index=True)
+curvas_gamma.to_csv("../outputs/canais_gamma.txt",index=True)
 
 
 
