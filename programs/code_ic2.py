@@ -44,6 +44,7 @@ for i, v in dicio_dlis.items():
     #colocando todos os arquivos lógicos na lista_logicos1 
     lista_logicos1.append(tail)
 
+#print(dicio_dlis)
 #print(lista_logicos1)
 
 
@@ -144,46 +145,46 @@ canais3 = list(sorted(set(canais2)))
 #canais_alvo = ['RT','DT']
 
 
-lista_curvas = []
+#lista_curvas = []
 
-for i in lista_logicos2: # ERRO!!!!!! Qual lista a iterar logicos 1 ou 2 ? Estava lista_logicos, variável não definida.
+#for i in lista_logicos2: # ERRO!!!!!! Qual lista a iterar logicos 1 ou 2 ? Estava lista_logicos, variável não definida.
     
-    for fr in lista_frames3:
+#    for fr in lista_frames3:
         
-        try:
+#        try:
             
             #pegando as curvas de todos os frames
-            frame = i.object('FRAME', fr)
-            curves = frame.curves()
+#            frame = i.object('FRAME', fr)
+#            curves = frame.curves()
         
-        except Exception as err: 
+#        except Exception as err: 
 
             #print(f' *O arquivo {i}, possui o erro: {err}*')
-            pass
+#            pass
          
-        for v in canais3:
+#        for v in canais3:
                 
-            try:
+#            try:
                 #colocando o nome da curva como o nome da curva + nome do logico  + nome do frame
-                curva_name = v + '_' + str(i) + '_' + str(fr)
+#                curva_name = v + '_' + str(i) + '_' + str(fr)
                 #transformando as curvas em dataframes, onde o index é o TDEP convertido para metros
-                curvas = pd.DataFrame(curves[v], columns = [curva_name], index = curves['TDEP']*0.00254)
+#                curvas = pd.DataFrame(curves[v], columns = [curva_name], index = curves['TDEP']*0.00254)
                 #colocando todos os dataframes em uma lista de dataframes
-                lista_curvas.append(curvas)
+#                lista_curvas.append(curvas)
                 #O asteristico alerta para quais lógicos possuem as curvas
                 #print(f'** O arquivo {i} possui a curva {v}')
 
 
-            except Exception as e: 
+#            except Exception as e: 
 
                 #print(f' O arquivo {i}, possui o erro: {e}')
-                pass
+#                pass
 
 
 #removendo as linhas com indices duplicados (são valores constantes realmente removidos das análises)
-lista_curvas2 = []
-for i in lista_curvas:
-    lista_curvas2.append(i.reset_index().drop_duplicates(subset='index', keep='last').set_index('index').sort_index())
+#lista_curvas2 = []
+#for i in lista_curvas:
+#    lista_curvas2.append(i.reset_index().drop_duplicates(subset='index', keep='last').set_index('index').sort_index())
 
 #print(lista_curvas2)# retorna vazia # quando eu itero com o lista_logicos2 funciona! Confirmar isso hoje!
 
@@ -191,18 +192,16 @@ for i in lista_curvas:
 
 
 #pegando alguns dataframes para teste
-lis = [lista_curvas2[0], lista_curvas2[1000], lista_curvas2[3000]]
+#lis = [lista_curvas2[0], lista_curvas2[1000], lista_curvas2[3000]]
 
 
 #concatenando a lista de teste
-curvas = pd.concat(lis, axis = 1)
+#curvas = pd.concat(lis, axis = 1)
 #curvas2 = pd.concat(lista_curvas2, axis = 1)
 
 
 #print(curvas)
 #print(curvas2)
-
-
 
 # ### CRIANDO UM DATAFRAME COM TODOS OS CANAIS E SEUS RESPECTIVOS "LONG NAMES"
 
@@ -234,12 +233,22 @@ def summary_dataframe(object, **kwargs):
 
 
 
-channels = summary_dataframe(f.channels, name='Name', long_name='Long Name',
-                             dimension='Dimension', units='Units', frame='Frame')
+pd.set_option('display.max_rows',7000)
+
+print(type(lista_logicos2[0]))
+
+
+#channels = summary_dataframe(f.channels, name='Name', long_name='Long Name',
+#                             dimension='Dimension', units='Units', frame='Frame')
+#print(channels)
+
+lista_sumario = []
+for i in lista_logicos2:
+    lista_sumario.append(summary_dataframe(i.channels, name='Name',long_name='Long Name', dimension='Dimension',
+        units= 'Units', frame= 'Frame'))
+
+channels = pd.concat(lista_sumario)
 print(channels)
-
-
-
 
 # ### FUNÇÃO PARA FILTRAR A PALAVRA ESCOLHIDA (PARÂMETRO FÍSICO) E RETORNAR UMA LISTA COM O NOME DOS CANAIS DO RESPECTIVO PARÂMETRO
 
@@ -252,13 +261,20 @@ def lista_canais(dataframe, nome_canal): # não está fazendo para outras propri
 
 
 
-lista_gamma = lista_canais(channels, 'Sonic')
+#lista_gamma = lista_canais('Resistivity','Sonic','Gamma')
+#print(lista_gamma)
+
+#Lista que deve conter os nomes das propriedades físicas que o usuário deseja salvar
+propriedades = ['Resistivity','Sonic','Gamma']
 
 
+lista_alvo = []
+for i in propriedades:
+    lista_alvo.append(lista_canais(channels,i))
 
-print(lista_gamma)
+lista_alvo = list(flatten(lista_alvo))
 
-
+print(lista_alvo)
 
 #FUNÇÃO PARA REMOVER VALORES REPETIDOS
 
@@ -274,18 +290,14 @@ def remove_repetidos(lista):
 # In[125]:
 
 
-lista_gamma = remove_repetidos(lista_gamma)
+#lista_gamma = remove_repetidos(lista_gamma)
+#print(lista_gamma)
 
-
-# In[126]:
-
-
-print(lista_gamma)
+lista_alvo = remove_repetidos(lista_alvo)
+print(lista_alvo)
 
 
 # ### APLICANDO O CÓDIGO NA NOVA LISTA
-
-# In[127]:
 
 
 lista_curvas = []
@@ -305,7 +317,7 @@ for i in lista_logicos2:
             print(f' *O arquivo {i}, possui o erro: {err}*')
             pass
          
-        for v in lista_gamma: ###AQUI QUE APLICA A NOVA LISTA <-----------------------------
+        for v in lista_alvo: ###AQUI QUE APLICA A NOVA LISTA <-----------------------------
                 
             try:
                 #colocando o nome da curva como o nome da curva + nome do logico  + nome do frame
@@ -334,14 +346,17 @@ for i in lista_curvas:
 # In[132]:
 
 
-curvas_gamma = pd.concat(lista_curvas2, axis = 1)
-
+curvas_alvo = pd.concat(lista_curvas2, axis = 1)
+print(curvas_alvo)
 
 # In[134]:
 
 
-print(curvas_gamma)
-print(type(curvas_gamma))
+curvas_alvo = curvas_alvo.reset_index()
+
+
+#print(curvas_gamma)
+#print(type(curvas_gamma))
 
 
 
@@ -368,8 +383,8 @@ print(type(curvas_gamma))
 
 #Salva o Dataframe:
 
-curvas_gamma.to_excel("../outputs/canais_gamma.xlsx",index=True)
-curvas_gamma.to_csv("../outputs/canais_gamma.txt",index=True)
+curvas_alvo.to_excel("../outputs/canais_alvo.xlsx",index=True)
+curvas_alvo.to_csv("../outputs/canais_alvo.txt",index=True)
 
 
 
