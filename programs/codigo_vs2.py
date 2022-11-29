@@ -13,7 +13,7 @@ from dlisio import dlis
 import pandas as pd
 from pandas import DataFrame, read_csv
 import re
-from collections import Iterable
+from collections.abc import Iterable
 import numpy as np
 import matplotlib.pyplot as plt
 # modulos internos
@@ -142,10 +142,15 @@ def filtro(dataframe, nome_canal):
 
 
 #colocar o nome da pasta, em formato de string, onde os arquivos dlis se encontram
-path = '../inputs/amazonas/1APS29AP'
 
 
-# In[8]:
+entrada = '..'+'/'+'inputs'+'/'
+saida = '..'+'/'+'outputs'+'/'
+imagens = '..'+'/'+'images'+'/'
+bacia = input('Entre com o nome da bacia sedimentar:') + '/'
+poco = input('Entre com o nome do poço:') 
+
+path = entrada + bacia + poco 
 
 
 lista_dlis = []
@@ -288,7 +293,16 @@ channels = pd.concat(lista_sumario)
 # In[19]:
 
 
-print(channels)
+#print(channels)
+channels.to_excel(saida + bacia + poco + '/channels.xlsx',index=False)
+channels.to_csv(saida + bacia + poco + '/channels.csv', header=False, index=False, sep='\t')
+
+
+
+print('**********************************************')
+print('Verificar o arquivo channels na pasta do poço!')
+print('**********************************************')
+db.pause()
 
 
 # #### FILTRANDO OS CANAIS.
@@ -298,7 +312,7 @@ print(channels)
 # In[20]:
 
 #lista que deve conter os nomes das propriedades físicas que o usuário deseja salvar
-propriedades = input('Insira *Ipsis Litteris* os nomes das propriedades físicas de interesse separadas por espaço simples:').split()
+propriedades = input('Insira *Ipsis Litteris* os nomes das propriedades físicas de interesse separadas por espaço simples->').split()
 
 
 #list(map(int, input('Insira *Ipsis Litteris* os nomes das propriedades físicas de interesse, entre aspas simples, na forma p1, p2, etc:').split()))
@@ -307,7 +321,7 @@ propriedades = input('Insira *Ipsis Litteris* os nomes das propriedades físicas
 
 
 print(propriedades)
-db.pause()
+#db.pause()
 #db.stop()
 
 
@@ -486,25 +500,14 @@ curvas_sem_index = curvas_alvo.reset_index()
 # In[58]:
 
 
-print(curvas_sem_index)
+print('Dimensão do arquivo com as propriedades alvo->',np.shape(curvas_sem_index))
 
 
 #Salva o Dataframe:
 
-curvas_alvo.to_excel("../outputs/amazonas/1APS29AP/alvos.xlsx",index=True)
-curvas_alvo.to_csv("../outputs/amazonas/1APS29AP/alvos.csv",index=True)
+curvas_sem_index.to_excel(saida + bacia + poco + '/alvos.xlsx' ,index=False)
+curvas_sem_index.to_csv(saida + bacia + poco + '/alvos.csv',index=True, header=True, sep='\t', mode='a')
 
-
-#Vizualiza alguns dados
-
-file = r'../outputs/amazonas/1APS29AP/alvos.xlsx'
-df = pd.read_excel(file)
-print(df['index'])
-
-plt.plot(df['index'], df['GR_LogicalFile(1APS 0029  APBRA1APS 0029  AP2)_Frame([0,1,BSL/GR/BOREHOLE-DEPTH/1/.20/M])'])
-plt.show()
-
-
-#df = pd.read_excel("../outputs/amazonas/1APS29AP/alvos.xlsx")
-
-
+print('*******************************')
+print('Verifique os arquivos de saída!')
+print('*******************************')
