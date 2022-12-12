@@ -538,7 +538,7 @@ print('*******************************')
 
 # ACOPLANDO A LITOLOGIA: EXPERIMENTAL!!!!!
 
-acopla = input('Você deseja acopĺar a litologia AGP?(sim ou não)->')
+acopla = input('Você deseja acoplar a litologia AGP?(sim ou não)->')
 if acopla == 'sim':
     path = entrada + bacia + poco
     #path = 'agps'
@@ -551,26 +551,22 @@ if acopla == 'sim':
     
     # É IMPORTANTE QUE O NOME DAS COLUNAS SEJAM SEMPRE ('Profundidade', 'Code', 'Rock'), POIS A FUNÇÃO PARA  ACOPLAR POSSUI CONDICIONAIS QUE DEPENDEM DESSES NOMES
     db.pause()
-    lito = pd.read_csv(lista_agp[0], sep='\s+', usecols=(0,2,3), index_col=False, na_values= ' ', skiprows=1, names=('Profundidade', 'Code', 'Rock'), encoding = "UFT-8" ) 
-    print(lito)
-    db.stop()
+    #lito = pd.read_csv(lista_agp[0], sep='\s+', usecols=(0,2,3), index_col=False, na_values= ' ', skiprows=1, names=('Profundidade', 'Code', 'Rock'))#, encoding = "UFT-8" ) 
+    P = int(input('Insira o índice da coluna profundidade ->'))
+    C = int(input('Insira o índice da coluna código ->'))
+    R = int(input('Insira o índice da coluna rocha->')) 
+    lito = pd.read_csv(lista_agp[0], sep='\s+', usecols=[P,C,R], index_col=False, na_values= ' ', skiprows=1, names=('Profundidade', 'Code', 'Rock'), encoding = "ISO-8859-1" )
+    #print(lito) OK!!!!
     # FILTRANDO A PARTE DO DATAFRAME QUE CONTÉM AS INFORMAÇÕES NECESSÁRIAS: LITOLOGIA, CODE E ROCK
-    litologia = lito.iloc[243:586]
-    curvas_lito = acoplador(curvas, litologia)
-    # PROBLEMA: ARQUIVOS AGP NÃO TÊM PADRÃO
-    print(lista_agp)
-    # EXEMPLO (DADO UTILIZADO SOMENTE PARA EXEMPLO, O ACOPLAMENTO NÃO CONDIZ COM O DLIS CORRETO): NOTE QUE PARA LER O AGP \1-BRSA-18-ESS_dados.txt, PRECISAMOS MUDAR OS PARÂMETROS DA FUNÇÃO:
-    agp1 = pd.read_csv(lista_agp[0], sep='\s+', usecols=(0,1,2), index_col=False, na_values= ' ', skiprows=1, names=('Profundidade', 'base', 'Rock'), encoding = "ISO-8859-1" )
-    # ESSA ALTERAÇÃO SERÁ MANUAL POR ENQUANTO, POIS AINDA NÃO ACHAMOS UMA FORMA DE AUTOMATIZAR A LEITURA DESSES DADOS, PORQUE ELES NÃO SÃO PADRONIZADOS.
-    lito_agp1 = agp1.loc[1138:1800]
-    print(lito_agp1)
-    #NO CASO DESSE AGP, PRECISAMOS FAZER TAMBÉM UMA MANIPULAÇAO DE STRING PARA PEGAR SOMENTE O VALOR DA PROFUNDIDADE
-    lito_agp1['Profundidade'] = lito_agp1['Profundidade'].apply(lambda x: x.split('/')[0])
-    curvas_agp1_lito = acoplador(curvas, lito_agp1)
-    print(curvas_agp1_lito)
+    init = int(input('Insira índice do topo da descrição do poço ->'))
+    final = int(input('Insira índice da base da descrição do poço ->'))
+    litologia = lito.loc[init:final] 
+    print(litologia)
+    db.stop()
+    curvas_lito = acoplador(curvas, litologia) # função acopladora
     #Salva o Dataframe:
-    curvas_agp1_lito.to_excel(saida + bacia + poco + '/alvosAGP.xlsx' ,index=False)
-    curvas_agp1_lito.to_csv(saida + bacia + poco + '/alvosAGP.csv',index=True, header=True, sep='\t', mode='a')
+    curvas_lito.to_excel(saida + bacia + poco + '/alvosAGP.xlsx' ,index=False)
+    curvas_lito.to_csv(saida + bacia + poco + '/alvosAGP.csv',index=True, header=True, sep='\t', mode='a')
     print('*******************************')
     print('--------Dados Acoplados!-------')
     print('*******************************')
