@@ -394,7 +394,7 @@ lista_alvo
 
 #no caso da Bacia do Amazonas, a string 'INDEX' aparece nos long names das profundidades.
 profundidade = ['INDEX','TDEP','DEPT','DEPTH']
-
+#profundidade = ['INDEX']
 
 
 
@@ -438,8 +438,7 @@ lista_profundidade
 
 # Para aplicarmos a função, utilizaremos 4 listas: lista_logicos2, lista_frames2, lista_alvo e lista_profundidade.
 
-# In[83]:
-
+# A conversão de pés para metros está errada. O fator multiplicativo é o 0.3048
 
 lista_curvas = []
 
@@ -467,10 +466,10 @@ for i in lista_logicos2:
 
                 try:
 
-                    curvas = (pd.DataFrame(curves[v], columns = [curve_name], index = curves[profundidade]))
+                    #curvas = (pd.DataFrame(curves[v], columns = [curve_name], index = curves[profundidade]))
                     
                     #CASO A PROFUNDIDADE ESTEJA EM PÉS, UTILIZE:
-                    #lista_curvas.append(pd.DataFrame(curves[v], columns = [curva_name], index = curves[profundidade]*0.00254))
+                    lista_curvas.append(pd.DataFrame(curves[v], columns = [curve_name], index = curves[profundidade]*0.3048))
                     
                     #transformando o valor -999.25 em nulo
                     curvas[curve_name][curvas[curve_name] == -999.250000] = np.nan
@@ -550,19 +549,23 @@ if acopla == 'sim':
     print(lista_agp[0])
     
     # É IMPORTANTE QUE O NOME DAS COLUNAS SEJAM SEMPRE ('Profundidade', 'Code', 'Rock'), POIS A FUNÇÃO PARA  ACOPLAR POSSUI CONDICIONAIS QUE DEPENDEM DESSES NOMES
-    db.pause()
+    #db.pause()
     #lito = pd.read_csv(lista_agp[0], sep='\s+', usecols=(0,2,3), index_col=False, na_values= ' ', skiprows=1, names=('Profundidade', 'Code', 'Rock'))#, encoding = "UFT-8" ) 
     P = int(input('Insira o índice da coluna profundidade ->'))
     C = int(input('Insira o índice da coluna código ->'))
     R = int(input('Insira o índice da coluna rocha->')) 
-    lito = pd.read_csv(lista_agp[0], sep='\s+', usecols=[P,C,R], index_col=False, na_values= ' ', skiprows=1, names=('Profundidade', 'Code', 'Rock'), encoding = "ISO-8859-1" )
+    cabecalho = int(input('Insira o número de linhas acima a ser descartado ->'))
+    rodape = int(input('Insira o número de linhas abaixo a ser descartado -> '))
+    lito = pd.read_csv(lista_agp[0], sep='\s+', usecols=[P,C,R], index_col=False, na_values= ' ',
+            skiprows=cabecalho, skipfooter=rodape, names=('Profundidade', 'Code', 'Rock'), encoding = "ISO-8859-1" )
     #print(lito) OK!!!!
     # FILTRANDO A PARTE DO DATAFRAME QUE CONTÉM AS INFORMAÇÕES NECESSÁRIAS: LITOLOGIA, CODE E ROCK
-    init = int(input('Insira índice do topo da descrição do poço ->'))
-    final = int(input('Insira índice da base da descrição do poço ->'))
-    litologia = lito.loc[init:final] 
+    #init = int(input('Insira índice do topo da descrição do poço ->'))
+    #final = int(input('Insira índice da base da descrição do poço ->'))
+    #litologia = lito.loc[init:final] 
+    litologia = lito
     print(litologia)
-    db.stop()
+    #db.stop()
     curvas_lito = acoplador(curvas, litologia) # função acopladora
     #Salva o Dataframe:
     curvas_lito.to_excel(saida + bacia + poco + '/alvosAGP.xlsx' ,index=False)
