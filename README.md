@@ -25,8 +25,8 @@ A(Baixar para sua máquina local os arquivos \n .dlis, .lis e agp.txt) --> B(Na 
     E --> F(Checar a unidade da profundidade medida. Caso a profundiade esteja em pés, \n comente linha 271 e descomente linha 274 para executar o fator de conversão. \n Caso a profundidade esteja em metros siga com o processamento)
     F --> G(Alimente a lista de propriedades com as propriedades físicas alvo)
     G --> H{Acoplador}
-    H --> |Havendo o arquivo agp| I[Abrir o arquivo agp e inserir os índices das colunas e das linhas \n a serem excluídas no topo e na base do arquivo]   
-    H --> |Não havendo o arquivo agp| J[Digitar não, no terminal, e finalizar o processamento]
+    H --> |Havendo o arquivo agp| I(Abrir o arquivo agp e inserir os índices das colunas e das linhas \n a serem excluídas no topo e na base do arquivo)   
+    H --> |Não havendo o arquivo agp| J(Digitar não, no terminal, e finalizar o processamento])
 
 
 ```
