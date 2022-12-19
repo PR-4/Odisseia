@@ -24,7 +24,7 @@ A(Baixar para sua máquina local os arquivos .dlis, .lis e agp.txt) --> B(criar 
     D --> E(verificar a profundidade no arquivo channels.xlsx ou channels.csv. ) 
     E --> F(Checar a unidade da profundidade medida)
     
-               F{Conversor}
+            
     F --> D(Profundidade em pés: comentar linha 271 e descomentar linha 274 para executar o fator de conversão)
     F --> G(Profundiade em metros: alimentar a lista propriedades com as propriedades alvo)
 
