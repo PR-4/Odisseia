@@ -30,7 +30,7 @@ A(Baixar para sua máquina local os arquivos .dlis, .lis e agp.txt) -->|inputs| 
 
                G{Requer análise do executor}
    G --> |Havendo o arquivo agp| H[abrir o arquivo agp e inserir os índices das colunas e das linhas a serem excluídas no topo e na base do arquivo]   
-   G  -> |Não havendo o arquivo agp| I[digitar não no terminal e finalizar o processamento]
+   G --> |Não havendo o arquivo agp| I[digitar não no terminal e finalizar o processamento]
 
 
 ```
