@@ -13,7 +13,7 @@ Neste site encomtram-se apenas as bacias terrestres: https://reate.cprm.gov.br/
 
 ## Metodologia
 
-Para que o programa odsseu.py funcione de acordo como ele foi concebido é necessário seguir os passos da metodologia abaixo
+Para que o programa odisseu.py funcione de acordo como ele foi concebido é necessário seguir os passos da metodologia abaixo
 
 ```mermaid
 flowchart TD
