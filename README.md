@@ -10,10 +10,27 @@ e o manual de referência https://dlisio.readthedocs.io/en/latest/
 ## Dados de poços do CPRM:
 Neste site encomtram-se apenas as bacias terrestres: https://reate.cprm.gov.br/
 
-### TODO semana de 21-26 de novembro de 2022:
 
-* [ @Layra ] ficar de stand by caso algum bug apareça por estarmos aplicando o programa em bacias com operadores diferentes. 
-* [ @Felipe Dovales ] As propriedades de interesse que você deverá procurar, na variável channels, são: resistividade, condutividade, sônico (ou tempo de trânsito), raio gama, densidade, efeito fotoelétrico (NPHI - porosidade neutrônica), caliper. Uma vez que você as identificou, no channels, você deverá colocar o nome tal está escrito, na variável propriedades. Este procedimento criará uma lista contendo as variáveis de interesse. Compilar o programa até o final e salvar o arquivo de excel contendo as variáveis de interesse para o poço dlis da bacia de trabalho. 
-* [ @Felipe Dovales ] Baixar para a sua máquina local os arquivos dlis das seguintes bacias: Para-Maranhão, Espírito Santo, Ceará, Sergipe-Alagoas. 
-OBS: não esqueça de fazer as devidas mudanças relativas ao path e ao arquivo de saída para não sobrescrevê-los
-* [ @Victor Carreira ] Aplicar a mesma metodologia para as Bacias Santos, Pelotas, Campos, Foz do Amazonas. 
+## Metodologia
+
+Para que o programa odsseu.py funcione de acordo como ele foi concebido é necessário seguir os passos da metodologia abaixo
+
+```mermaid
+flowchart TD
+
+A(Baixar para sua máquina local os arquivos .dlis, .lis e agp.txt) -->|inputs| B(criar uma subpasta com o nome da bacia e outra com o nome do poço, dentro da pasta com o nome da bacia)
+    B --> |outputs| C(repetir o processo acima para a pasta outputs)
+    C --> |programs| D(executar no terminal o comando python odisseu.py)
+    D --> E(inserir a localização dos arquivos conforme etapas A e B)
+    E --> |outputs| F(verificar a profundidade no arquivo channels.xlsx ou channels.csv.)
+
+               F{Requer análise do executor}
+    F -->|Profundidade em pés| C[comentar linha 271 e descomentar linha 274 para executar o fator de conversão]
+    F -->|Profundiade em metros| G[alimentar a lista propriedades com as propriedades alvo]
+
+               G{Requer análise do executor}
+   G --> |Havendo o arquivo agp| H[abrir o arquivo agp e inserir os índices das colunas e das linhas a serem excluídas no topo e na base do arquivo]   
+   G  -> |Não havendo o arquivo agp| I[digitar não no terminal e finalizar o processamento]
+
+
+```
