@@ -18,15 +18,15 @@ Para que o programa odsseu.py funcione de acordo como ele foi concebido é neces
 ```mermaid
 flowchart TD
 
-A(Baixar para sua máquina local os arquivos \n .dlis, .lis e agp.txt) --> B(Criar uma subpasta com o nome da bacia e \n outra com o nome do poço, dentro da pasta com o nome da bacia)
-    B --> C(Repetir o processo acima para a pasta outputs)
+A(Baixar para sua máquina local os arquivos \n .dlis, .lis e agp.txt) --> B(Na pasta inputs, criar uma subpasta com o nome da bacia e \n uma subsub pasta com o nome do poço.)
+    B --> C(Repetir o processo acima para na outputs)
     C --> D(Executar no terminal o comando python odisseu.py)
-    D --> E(Verificar a profundidade no arquivo channels.xlsx ou channels.csv. ) 
+    D --> E(Verificar o arquivo channels.xlsx ou channels.csv. ) 
     E --> F(Checar a unidade da profundidade medida. Caso a profundiade esteja em pés, \n comente linha 271 e descomente linha 274 para executar o fator de conversão. \n Caso a profundidade esteja em metros siga com o processamento)
-    F --> G(Alimente a lista propriedades com as propriedades alvo)
+    F --> G(Alimente a lista de propriedades com as propriedades físicas alvo)
     G --> H{Acoplador}
     H --> |Havendo o arquivo agp| I[Abrir o arquivo agp e inserir os índices das colunas e das linhas \n a serem excluídas no topo e na base do arquivo]   
-    H --> |Não havendo o arquivo agp| J[Digitar não no terminal e finalizar o processamento]
+    H --> |Não havendo o arquivo agp| J[Digitar não, no terminal, e finalizar o processamento]
 
 
 ```
