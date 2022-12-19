@@ -1,5 +1,5 @@
 # Odisseia
-Investigação metodológica para a análise de dados de um dlis.
+Criação de um banco de dados direcional.
 
 O objetivo deste repositório é explorar o conteúdo de um arquivo DLIS associado à um poço específico. Note que o objetivo é "casar" os dados do DLIS com o conteúdo da tabela de dados geoquímicos `exemplo Tabela poço 7-PIR-184D-AL.xlsx`.<br>
 
@@ -13,24 +13,20 @@ Neste site encomtram-se apenas as bacias terrestres: https://reate.cprm.gov.br/
 
 ## Metodologia
 
-Para que o programa odsseu.py funcione de acordo como ele foi concebido é necessário seguir os passos da metodologia abaixo
+Para que o programa odisseu.py funcione de acordo como ele foi concebido é necessário seguir os passos da metodologia abaixo
 
 ```mermaid
 flowchart TD
 
-A(Baixar para sua máquina local os arquivos .dlis, .lis e agp.txt) -->|inputs| B(criar uma subpasta com o nome da bacia e outra com o nome do poço, dentro da pasta com o nome da bacia)
-    B --> |outputs| C(repetir o processo acima para a pasta outputs)
-    C --> |programs| D(executar no terminal o comando python odisseu.py)
-    D --> E(inserir a localização dos arquivos conforme etapas A e B)
-    E --> |outputs| F(verificar a profundidade no arquivo channels.xlsx ou channels.csv.)
-
-               F{Requer análise do executor}
-    F -->|Profundidade em pés| C[comentar linha 271 e descomentar linha 274 para executar o fator de conversão]
-    F -->|Profundiade em metros| G[alimentar a lista propriedades com as propriedades alvo]
-
-               G{Requer análise do executor}
-   G --> |Havendo o arquivo agp| H[abrir o arquivo agp e inserir os índices das colunas e das linhas a serem excluídas no topo e na base do arquivo]   
-   G  -> |Não havendo o arquivo agp| I[digitar não no terminal e finalizar o processamento]
+A(Baixar para sua máquina local os arquivos \n .dlis, .lis e agp.txt) --> B(Na pasta inputs, criar uma subpasta com o nome da bacia e \n uma subsub pasta com o nome do poço.)
+    B --> C(Repetir o processo acima para na outputs)
+    C --> D(Executar no terminal o comando python odisseu.py)
+    D --> E(Verificar o arquivo channels.xlsx ou channels.csv. ) 
+    E --> F(Checar a unidade da profundidade medida. Caso a profundiade esteja em pés, \n comente linha 271 e descomente linha 274 para executar o fator de conversão. \n Caso a profundidade esteja em metros siga com o processamento)
+    F --> G(Alimente a lista de propriedades com as propriedades físicas alvo)
+    G --> H{Acoplador}
+    H --> |Havendo o arquivo agp| I(Abrir o arquivo agp e inserir os índices das colunas e das linhas \n a serem excluídas no topo e na base do arquivo)   
+    H --> |Não havendo o arquivo agp| J(Digitar não, no terminal, e finalizar o processamento)
 
 
 ```
