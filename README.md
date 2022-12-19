@@ -18,11 +18,13 @@ Para que o programa odsseu.py funcione de acordo como ele foi concebido é neces
 ```mermaid
 flowchart TD
 
-A(Baixar para sua máquina local os arquivos .dlis, .lis e agp.txt) -->|inputs| B(criar uma subpasta com o nome da bacia e outra com o nome do poço, dentro da pasta com o nome da bacia)
-    B --> |outputs| C(repetir o processo acima para a pasta outputs)
-    C --> |programs| D(executar no terminal o comando python odisseu.py)
-    D -->  E(verificar a profundidade no arquivo channels.xlsx ou channels.csv. ) 
-    E --> F{Profundidade}
+A(Baixar para sua máquina local os arquivos .dlis, .lis e agp.txt) --> B(criar uma subpasta com o nome da bacia e outra com o nome do poço, dentro da pasta com o nome da bacia)
+    B --> C(repetir o processo acima para a pasta outputs)
+    C --> D(executar no terminal o comando python odisseu.py)
+    D --> E(verificar a profundidade no arquivo channels.xlsx ou channels.csv. ) 
+    E --> F(Checar a unidade da profundidade medida)
+    
+               F{Conversor}
     F --> D(Profundidade em pés: comentar linha 271 e descomentar linha 274 para executar o fator de conversão)
     F --> G(Profundiade em metros: alimentar a lista propriedades com as propriedades alvo)
 
