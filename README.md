@@ -1,5 +1,5 @@
 # Odisseia
-Investigação metodológica para a análise de dados de um dlis.
+Criação de um banco de dados direcional.
 
 O objetivo deste repositório é explorar o conteúdo de um arquivo DLIS associado à um poço específico. Note que o objetivo é "casar" os dados do DLIS com o conteúdo da tabela de dados geoquímicos `exemplo Tabela poço 7-PIR-184D-AL.xlsx`.<br>
 
