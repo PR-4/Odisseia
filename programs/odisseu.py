@@ -268,10 +268,10 @@ for i in lista_logicos2:
 
                 try:
 
-                    #curvas = (pd.DataFrame(curves[v], columns = [curve_name], index = curves[profundidade]))
+                    curvas = (pd.DataFrame(curves[v], columns = [curve_name], index = curves[profundidade]))
                     
                     #CASO A PROFUNDIDADE ESTEJA EM PÉS, UTILIZE:
-                    lista_curvas.append(pd.DataFrame(curves[v], columns = [curve_name], index = curves[profundidade]*0.3048))
+                    #lista_curvas.append(pd.DataFrame(curves[v], columns = [curve_name], index = curves[profundidade]*0.3048))
                     
                     #transformando o valor -999.25 em nulo
                     curvas[curve_name][curvas[curve_name] == -999.250000] = np.nan
@@ -329,7 +329,7 @@ print('*******************************')
 
 
 
-# ACOPLANDO A LITOLOGIA: EXPERIMENTAL!!!!!
+# ACOPLAMENTO  DA LITOLOGIA:
 
 acopla = input('Você deseja acoplar a litologia AGP?(sim ou não)->')
 if acopla == 'sim':
@@ -353,7 +353,6 @@ if acopla == 'sim':
     # FILTRANDO A PARTE DO DATAFRAME QUE CONTÉM AS INFORMAÇÕES NECESSÁRIAS: LITOLOGIA, CODE E ROCK
     litologia = lito
     print(litologia)#dataframe que contém as informações do agp
-    #db.stop()
     curvas_lito = sk.acoplador(curvas, litologia) # função acopladora
     #Salva o Dataframe:
     curvas_lito.to_excel(saida + bacia + poco + '/alvosAGP.xlsx' ,index=False)
