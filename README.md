@@ -22,10 +22,10 @@ A(Baixar para sua máquina local os arquivos .dlis, .lis e agp.txt) -->|inputs| 
     B --> |outputs| C(repetir o processo acima para a pasta outputs)
     C --> |programs| D(executar no terminal o comando python odisseu.py)
     D --> E(inserir a localização dos arquivos conforme etapas A e B)
-    E --> |outputs| F(verificar a profundidade no arquivo channels.xlsx ou channels.csv. )
+    E --> |Profundidade em pés| F(verificar a profundidade no arquivo channels.xlsx ou channels.csv. )
 
                F{Requer análise do executor}
-    F(comentar linha 271 e descomentar linha 274 para executar o fator de conversão) -->|Profundidade em pés| D(executar no terminal o comando python odisseu.py)
+    F(comentar linha 271 e descomentar linha 274 para executar o fator de conversão) --> D(executar no terminal o comando python odisseu.py)
     F -->|Profundiade em metros| G[alimentar a lista propriedades com as propriedades alvo]
 
                G{Requer análise do executor}
