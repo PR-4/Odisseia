@@ -26,7 +26,7 @@ A(Baixar para sua máquina local os arquivos \n .dlis, .lis e agp.txt) --> B(Na 
     F --> G(Alimente a lista de propriedades com as propriedades físicas alvo)
     G --> H{Acoplador}
     H --> |Havendo o arquivo agp| I(Abrir o arquivo agp e inserir os índices das colunas e das linhas \n a serem excluídas no topo e na base do arquivo)   
-    H --> |Não havendo o arquivo agp| J(Digitar não, no terminal, e finalizar o processamento])
+    H --> |Não havendo o arquivo agp| J(Digitar não, no terminal, e finalizar o processamento)
 
 
 ```
