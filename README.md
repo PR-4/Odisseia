@@ -22,9 +22,10 @@ A(Baixar para sua máquina local os arquivos .dlis, .lis e agp.txt) -->|inputs| 
     B --> |outputs| C(repetir o processo acima para a pasta outputs)
     C --> |programs| D(executar no terminal o comando python odisseu.py)
     D -->  E(verificar a profundidade no arquivo channels.xlsx ou channels.csv. )
-    E --> F{Fator de conversão}             
-    F |Profundidade em pés|(comentar linha 271 e descomentar linha 274 para executar o fator de conversão) --> D(executar no terminal o comando python odisseu.py)
-    F |Profundiade em metros|  --> G[alimentar a lista propriedades com as propriedades alvo]
+    E --> F{Fator de conversão}  
+    
+    F (Profundidade em pés: comentar linha 271 e descomentar linha 274 para executar o fator de conversão) --> D(executar no terminal o comando python odisseu.py)
+    F (|Profundiade em metros: seguir o fluxo normal de processamento)  --> G[alimentar a lista propriedades com as propriedades alvo]
 
                G{Acoplador}
    G --> |Havendo o arquivo agp| H[abrir o arquivo agp e inserir os índices das colunas e das linhas a serem excluídas no topo e na base do arquivo]   
