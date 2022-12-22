@@ -240,7 +240,30 @@ lista_profundidade= sk.remove_repetidos(sorted(lista_profundidade))
 
 # Para aplicarmos a função, utilizaremos 4 listas: lista_logicos2, lista_frames2, lista_alvo e lista_profundidade.
 
-# A conversão de pés para metros está errada. O fator multiplicativo é o 0.3048
+# Fatores de conversão de profundidade:
+
+nomedaunidade = input('Entre com o nome da unidade de profundidade (metro, polegada, polegada1 (polegada vezes 0.1) ou pe):')
+metro = nomedaunidade
+polegada = nomedaunidade
+polegada1 = nomedaunidade
+pe = nomedaunidade
+
+if nomedaunidade == metro:
+    fatordeconversao = 1
+else:
+    pass
+if nomedaunidade == polegada:
+    fatordeconversao = 0.00254
+else:
+    pass
+if nomedaunidade == polegada1:
+    fatordeconversao = 0.000254
+else:
+    pass
+if nomedaunidade == pe:
+    fatordeconversao = 0.3048
+else:
+    pass
 
 lista_curvas = []
 
@@ -268,7 +291,7 @@ for i in lista_logicos2:
 
                 try:
 
-                    curvas = (pd.DataFrame(curves[v], columns = [curve_name], index = curves[profundidade]))
+                    curvas = (pd.DataFrame(curves[v], columns = [curve_name], index = curves[profundidade]*fatordeconversao))
                     
                     #CASO A PROFUNDIDADE ESTEJA EM PÉS, UTILIZE:
                     #lista_curvas.append(pd.DataFrame(curves[v], columns = [curve_name], index = curves[profundidade]*0.3048))
